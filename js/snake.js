@@ -27,6 +27,7 @@
     var nextDirection = Array();
     var MAX_Y = 16;
     var MAX_X = 25;
+    var DEFAULT_GAME_SPEED = 150;
     var squares = new Array(); 
     var currentX = 3;
     var currentY = 1;
@@ -127,6 +128,8 @@
         food.setX((foodX+1)*30-15);
         food.setY((foodY+3)*30-15);
 
+        gameSpeed = DEFAULT_GAME_SPEED;
+
         direction = 1;
         score = 0;
         scoreText.setText('Score: ' + score);
@@ -149,7 +152,7 @@
    
     var gameTime = 0;
     var go = false;
-    var gameSpeed = 150;
+    var gameSpeed = DEFAULT_GAME_SPEED;
     function update(time,delta) {
         gameTime += delta;
         if(gameTime > gameSpeed && go){
