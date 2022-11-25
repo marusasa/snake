@@ -2,7 +2,18 @@ body {
     margin: 0;
 }
 
-.content {
+.game-container{
+    display: flex;
+    width: 1000px;
+    margin:auto;
+}
+
+.content-left{
     max-width: 800px;
     margin: auto;
+}
+
+
+.content-right{
+    width: 100px;
 }
