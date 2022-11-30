@@ -1,77 +1,3 @@
-class MarudotHS {
-    constructor(gameId, domElemId){
-        this.gameId = gameId;
-        this.domElemId = domElemId;
-        this.urlBase = 'http://localhost:8080';
-        this.bottomScore = 0;
-        this.hsList = [];
-        this.scoreToKeep = 0;
-    }
-    addScore(score, name){
-        let reqBody = {
-            "gameId": this.gameId,
-            "name": name,
-            "score": score
-        }
-        let obj = {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-            }, 
-            body: JSON.stringify(reqBody)
-        };
-        fetch(this.urlBase + '/addscore',obj)
-            .then((response) => response.json())
-            .then((data) => {
-                if(data.success){
-                   this.hsList = data.scores;
-                   this.scoreToKeep = data.score_to_keep;
-                   this.bottomScore = data.bottom_score;
-                   this.render();
-                }else{
-                    console.error(data.errors);
-                }
-            });
-    }
-    reload(){
-        //fetch high score
-        fetch(this.urlBase + '/scores/' + this.gameId)
-            .then((response) => response.json())
-            .then((data) => {
-                if(data.success){
-                    this.hsList = data.scores;
-                    this.scoreToKeep = data.score_to_keep;
-                    this.bottomScore = data.bottom_score;
-                    this.render();
-                }else{
-                    console.error(data.errors);
-                }
-            });
-    }
-    render(){
-        //clear dom children
-        const parent = document.getElementById(this.domElemId);
-        while (parent.firstChild) {
-            parent.firstChild.remove();
-        }
-        //create html for list
-        for(let x = 0;x < this.scoreToKeep;x++){
-            let score = 0;
-            let name = '          ';
-            if(x < this.hsList.length){
-                score = this.hsList[x].score;
-                name  = this.hsList[x].name;
-            }
-            const liChild = document.createElement('li');
-            liChild.textContent = String(x+1).padStart(2,' ') + ' ' + String(score).padStart(4,' ') + ' ' + name.padEnd(10,' ');
-            parent.appendChild(liChild);
-         }
-    }
-    get bottomScore(){
-        return this.bottomScore;
-    }
-}
-
 (function () {
     var config = {
         type: Phaser.AUTO,
@@ -95,8 +21,6 @@ class MarudotHS {
             createContainer: true
         }
     };
-
-    
 
     var game = new Phaser.Game(config);
     var food;
@@ -124,6 +48,10 @@ class MarudotHS {
         scoreTextArray:[],
         domElement:null
     }
+    var keys;
+    var gameObjArray = [new MarudotGameObj("878e8b4f-8aee-4a49-b981-9d0eac814edf","marudot-hs-daily"),
+            new MarudotGameObj("b45f4dd0-17ce-4dc7-8207-32bec606263f","marudot-hs-weekly")];
+    var hsObj = new MarudotHighScore(gameObjArray);
 
     function preload() {
         this.load.image('snake_body', 'assets/snake_square.png');
@@ -162,6 +90,21 @@ class MarudotHS {
 
         //  Input Events
         cursors = this.input.keyboard.createCursorKeys();
+        this.input.keyboard.addKey('W').on('down',function (event) {
+            nextDirection.push(0);
+        });
+        this.input.keyboard.addKey('A').on('down',function (event) {
+            nextDirection.push(3);
+        });
+        this.input.keyboard.addKey('S').on('down',function (event) {
+            nextDirection.push(2);
+        });
+        this.input.keyboard.addKey('X').on('down',function (event) {
+            nextDirection.push(2);
+        });
+        this.input.keyboard.addKey('D').on('down',function (event) {
+            nextDirection.push(1);
+        });         
         cursors.up.on('down', function (event) {
             nextDirection.push(0);
         });
@@ -179,11 +122,11 @@ class MarudotHS {
             if(!go && !hs.domElement.visible){
                 resetGame();
                 go = true;
-                highscoregroup.setVisible(false);
+                //highscoregroup.setVisible(false);
             }
         });
 
-       
+       /*
         const rect = this.add.rectangle(350, 150, 400, 400, 0x808080);
         rect.setOrigin(0,0);
         const rect2 = this.add.rectangle(354, 154, 392, 392, 0xffffff);
@@ -229,52 +172,31 @@ class MarudotHS {
                 showHighScores();
              }
          });
+         */
+         hsObj.loadHS();
 
          //prepare highscore input html
          hs.domElement = this.add.dom(200,150).createFromCache('hs_input');
          hs.domElement.setOrigin(0,0);
          hs.domElement.on('click', function (event) {
             if (event.target.name === 'submitButton'){
+                event.target.disabled = true;
                 let inputName = this.getChildByName('nameField');
-                if (inputName.value !== ''){
+                if (hsObj.validate(score, inputName.value)){
                     //  Turn off the click events
                     this.removeListener('click');
                     console.log(inputName.value);
-                    //call service
-                    let reqBody = {
-                        "gameId": "878e8b4f-8aee-4a49-b981-9d0eac814edf",
-                        "name": inputName.value ,
-                        "score": score
-                    }
-                    let obj = {
-                        method: 'POST', 
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }, 
-                        body: JSON.stringify(reqBody)
-                    };
-                    fetch('http://localhost:8080/addscore',obj)
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if(data.success){
-                                hs.list = data.scores;
-                                hs.domElement.setVisible(false);
-                                game.input.keyboard.startListeners();
-                                showHighScores();
-                            }else{
-                                hs.domElement.addListener('click');
-                                alert(data.errors[0]);
-                            }
-                        });
-                }else{
-                    alert('Please enter your name.');
+                    hsObj.addScore(score, inputName.value);                    
+                    hs.domElement.setVisible(false);
+                    game.input.keyboard.startListeners();
                 }
+                event.target.disabled = false;
             }else if(event.target.name === 'cancelButton'){
                 this.removeListener('click');
                 console.log('HS Canceled');
                 hs.domElement.setVisible(false);
                 game.input.keyboard.startListeners();
-                showHighScores();
+                //showHighScores();
             }
         });
         hs.domElement.setVisible(false);        
@@ -283,7 +205,10 @@ class MarudotHS {
     function askHSName(score){
         hs.domElement.addListener('click');
         hs.domElement.getChildByID('hs_score_disp').setHTML(score);
-        hs.domElement.setVisible(true);
+        hs.domElement.setVisible(true);        
+        setTimeout(() => {
+            document.getElementsByName("nameField")[0].focus();    
+            },400);
         game.input.keyboard.stopListeners();
     }
 
@@ -382,8 +307,12 @@ class MarudotHS {
             if(currentY < 0 || currentX < 0 || currentY > MAX_Y || currentX > MAX_X ||
                     squares[currentX][currentY].visible){
                 go = false;
-                //setTimeout(showHighScores, 1000);
-                askHSName(score);
+                let dailyGo = false;
+                let weeklyGo = false;
+                if(hsObj.isNewHS(score)){
+                    askHSName(score);
+                }
+
                 gameText.setText('Game Over');
                 this.time.delayedCall(2000, function(){if(!go){gameText.setText('Hit Space to Restart');}});
             }else{

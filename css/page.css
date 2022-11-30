@@ -2,18 +2,86 @@ body {
     margin: 0;
 }
 
+.top-area{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 2em;
+    background-color:dodgerblue;
+    color: white;
+    padding-left: 0.2em;
+    padding-bottom: 0.1em;
+}
+
+.top-area > a {
+    color: inherit; 
+    text-decoration: inherit; /* no underline */
+}
+
 .game-container{
     display: flex;
-    width: 1000px;
+    width: 1030px;
     margin:auto;
 }
 
 .content-left{
     max-width: 800px;
-    margin: auto;
+    /*margin: auto;*/
 }
 
 
 .content-right{
-    width: 100px;
+    width: 230px;
+    font-family: 'Courier New', monospace;    
 }
+
+div.highscore{
+    border-style: solid;    
+    border-color: darkgrey;
+    border-width: 2px;
+    border-radius: 0.5em;
+    padding-left: 8px;
+}
+
+div.highscore-daily{
+    margin-top: 60px;
+}
+
+div.highscore-weekly{
+    margin-top: 10px;
+}
+
+p.highscore-title{
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+ul#marudot-hs-daily, ul#marudot-hs-weekly{
+    list-style-type: none;
+    padding-left: 0px;
+    white-space: pre;
+    font-size: 1.1em;    
+}
+
+div.center-screen {
+    width:500px;
+    height:300px;
+    background-color:white;
+    z-index:200;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  div.center-screen > p{
+    font-size: 32px;
+    margin: 10px;
+  }
+
+  div#game-loc{
+    position: relative;
+  }
+  td{
+    padding:5px;
+  }
