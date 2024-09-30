@@ -43,8 +43,8 @@
 	var hs = {
 		domElement: null
 	}
-	var gameObjArray = [new SsgGameObj("4b3c3377-5639-4b89-bb11-23165e50124f", "marudot-hs-weekly"),
-	new SsgGameObj("49fc982c-5fcb-4eb6-ba42-e9a97a9d0895", "marudot-hs-monthly")];
+	var gameObjArray = [new SsgGameObj("14dc9ac2-39d3-4015-b482-407ef8a2b86a", "marudot-hs-weekly"),
+	new SsgGameObj("34b85f8b-8d13-43f3-837a-bbfcfeee8a69", "marudot-hs-monthly")];
 	var hsObj = new SsgHighScore(gameObjArray);
 
 	function preload() {
