@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    background-color:white;
 }
 
 .top-area{
@@ -9,6 +10,7 @@ body {
     color: white;
     padding-left: 0.2em;
     padding-bottom: 0.1em;
+    margin-bottom: 10px;
 }
 
 .top-area > a {
@@ -16,9 +18,10 @@ body {
     text-decoration: inherit; /* no underline */
 }
 
+
 .game-container{
     display: flex;
-    width: 1030px;
+    width: 1040px;
     margin:auto;
 }
 
@@ -27,10 +30,16 @@ body {
     /*margin: auto;*/
 }
 
+table.game-desc{
+	font-size: 1.2em;
+	font-family: 'Courier New', monospace;    
+}
+
 
 .content-right{
-    width: 230px;
+    width: 240px;
     font-family: 'Courier New', monospace;    
+    margin-left: 10px;
 }
 
 div.highscore{
@@ -41,11 +50,10 @@ div.highscore{
     padding-left: 8px;
 }
 
-div.highscore-daily{
-    margin-top: 60px;
+div.highscore-weekly{
 }
 
-div.highscore-weekly{
+div.highscore-monthly{
     margin-top: 10px;
 }
 
@@ -54,34 +62,47 @@ p.highscore-title{
     font-size: 1.2em;
 }
 
-ul#marudot-hs-daily, ul#marudot-hs-weekly{
+ul#marudot-hs-monthly, ul#marudot-hs-weekly{
     list-style-type: none;
     padding-left: 0px;
     white-space: pre;
     font-size: 1.1em;    
 }
 
-div.center-screen {
-    width:500px;
-    height:300px;
+div.highscore-dialog{
     background-color:white;
-    z-index:200;
-    position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-  }
+    padding: 20px;
+    border: darkgray;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    box-shadow: 3px 3px lightgrey;
+}
 
-  div.center-screen > p{
-    font-size: 32px;
+div.highscore-dialog p{
     margin: 10px;
-  }
+    font-weight: bold;
+}
+div.highscore-dialog input[type=text]{
+    margin-bottom: 10px;
+    font-size: 24px;
+    border-style: solid;
+    border-radius: 3px;
+    border-color: gray;
+}
 
-  div#game-loc{
-    position: relative;
-  }
-  td{
-    padding:5px;
-  }
+div.highscore-dialog input[type=button]{
+    font-size: 24px;
+    color: white;
+    border-radius: 0.1em;
+    border-width: thin;
+    border-color: darkgray;
+}
+div.highscore-dialog input[name=submitButton]{
+    background-color: dodgerblue;    
+}
+div.highscore-dialog input[name=cancelButton]{
+    background-color: darkgray;    
+}
