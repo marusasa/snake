@@ -1,6 +1,9 @@
 /**
  * Project url: https://github.com/marusasa/ssg-high-score
- * License: Free
+ * Version: 1.0
+ * Date: 2024-09-29
+ * Author: Sasagu Maruyama
+ * License: MIT License
  */
 
 /** 
